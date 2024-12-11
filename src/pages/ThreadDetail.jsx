@@ -1,36 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
     asyncAddThreadComment,
     asyncReceiveThreadDetail,
-    asyncToggleVoteComment,
     asyncToggleVoteThreadDetail,
 } from "../states/threadDetail/action";
 import { FaCommentDots, FaTags } from "react-icons/fa";
 import Votes from "../components/Votes";
 import parser from "html-react-parser";
 import { showFormattedDate } from "../utils";
+import CommentList from "../components/CommentList";
+import CreateCommentForm from "../components/CreateCommentForm";
 
 const ThreadDetail = () => {
     const { threadId } = useParams();
-
-    const [comment, setComment] = useState("");
 
     const { authUser, threadDetail: thread = null } = useSelector(
         (states) => states
     );
     const dispatch = useDispatch();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        try {
-            dispatch(asyncAddThreadComment({ threadId, content: comment }));
-            setComment("");
-        } catch (error) {
-            alert(error.message);
-        }
+    const handleSubmit = (comment) => {
+        dispatch(asyncAddThreadComment({ threadId, content: comment }));
     };
 
     useEffect(() => {
@@ -80,59 +72,11 @@ const ThreadDetail = () => {
                     </span>
                 </div>
                 <div className="mt-6">
-                    <form className="mb-6" onSubmit={handleSubmit}>
-                        <textarea
-                            name="comment"
-                            className="w-full p-2 border border-gray-300 rounded-lg mb-2"
-                            placeholder="Write your comment here..."
-                            required
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                        ></textarea>
-                        <button
-                            type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                        >
-                            Submit Comment
-                        </button>
-                    </form>
-                    <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                        Comments
-                    </h3>
-                    {thread.comments.map((comment) => (
-                        <div
-                            key={comment.id}
-                            className="bg-gray-50 p-4 rounded-lg shadow-md mb-4"
-                        >
-                            <div className="flex items-center mb-2">
-                                <img
-                                    src={comment.owner.avatar}
-                                    alt={comment.owner.name}
-                                    className="w-8 h-8 rounded-full mr-4"
-                                />
-                                <div>
-                                    <h4 className="text-md font-semibold text-gray-700">
-                                        {comment.owner.name}
-                                    </h4>
-                                    <p className="text-gray-600">
-                                        {new Date(
-                                            comment.createdAt
-                                        ).toLocaleString()}
-                                    </p>
-                                </div>
-                            </div>
-                            <p className="text-gray-600">
-                                {parser(comment.content)}
-                            </p>
-                            <Votes
-                                upVotesBy={comment.upVotesBy}
-                                downVotesBy={comment.downVotesBy}
-                                objectContentId={{ commentId: comment.id }}
-                                userId={authUser?.id}
-                                asyncToggle={asyncToggleVoteComment}
-                            />
-                        </div>
-                    ))}
+                    <CreateCommentForm onSubmit={handleSubmit} />
+                    <CommentList
+                        comments={thread.comments}
+                        authUser={authUser}
+                    />
                 </div>
             </div>
         </div>
