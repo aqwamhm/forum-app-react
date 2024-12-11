@@ -95,8 +95,7 @@ Votes.propTypes = {
     upVotesBy: PropTypes.array.isRequired,
     downVotesBy: PropTypes.array.isRequired,
     objectContentId: PropTypes.object.isRequired,
-    userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+    userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     asyncToggle: PropTypes.func.isRequired,
 };
 

@@ -1,8 +1,9 @@
 import api from "../../utils/api";
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 const ActionType = {
     RECEIVE_THREADS: "RECEIVE_THREADS",
-    CREATE_THREAD: "CREATE_THREAD",
+    ADD_THREAD: "ADD_THREAD",
     TOGGLE_VOTE_THREAD: "TOGGLE_VOTE_THREAD",
     REVERT_VOTE_THREAD: "REVERT_VOTE_THREAD",
 };
@@ -16,9 +17,9 @@ function receiveThreadsActionCreator(threads) {
     };
 }
 
-function createThreadActionCreator(thread) {
+function addThreadActionCreator(thread) {
     return {
-        type: ActionType.CREATE_THREAD,
+        type: ActionType.ADD_THREAD,
         payload: {
             thread,
         },
@@ -47,10 +48,27 @@ function revertVoteThreadActionCreator({ threadId, userId, previousVoteType }) {
     };
 }
 
-function asyncCreateThread({ title, body, category = null }) {
+function asyncReceiveThreads() {
     return async (dispatch) => {
-        const thread = await api.createThread({ title, body, category });
-        dispatch(createThreadActionCreator(thread));
+        dispatch(showLoading());
+        try {
+            const threads = await api.getAllThreads();
+            dispatch(receiveThreadsActionCreator(threads));
+        } finally {
+            dispatch(hideLoading());
+        }
+    };
+}
+
+function asyncAddThread({ title, body, category }) {
+    return async (dispatch) => {
+        dispatch(showLoading());
+        try {
+            const thread = await api.createThread({ title, body, category });
+            dispatch(addThreadActionCreator(thread));
+        } finally {
+            dispatch(hideLoading());
+        }
     };
 }
 
@@ -70,6 +88,7 @@ function asyncToggleVoteThread({ threadId, userId, voteType }) {
             }
         }
 
+        dispatch(showLoading());
         dispatch(toggleVoteThreadActionCreator({ threadId, userId, voteType }));
 
         try {
@@ -89,6 +108,8 @@ function asyncToggleVoteThread({ threadId, userId, voteType }) {
                 })
             );
             alert(error.message);
+        } finally {
+            dispatch(hideLoading());
         }
     };
 }
@@ -96,7 +117,10 @@ function asyncToggleVoteThread({ threadId, userId, voteType }) {
 export {
     ActionType,
     receiveThreadsActionCreator,
+    addThreadActionCreator,
     toggleVoteThreadActionCreator,
+    revertVoteThreadActionCreator,
+    asyncReceiveThreads,
+    asyncAddThread,
     asyncToggleVoteThread,
-    asyncCreateThread,
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { asyncCreateThread } from "../states/threads/action";
+import { asyncAddThread } from "../states/threads/action";
 import { useNavigate } from "react-router-dom";
 
 const CreateThread = () => {
@@ -15,7 +15,7 @@ const CreateThread = () => {
         e.preventDefault();
 
         try {
-            await dispatch(asyncCreateThread({ title, body, category }));
+            await dispatch(asyncAddThread({ title, body, category }));
             navigate("/");
         } catch (error) {
             alert(error.message);
