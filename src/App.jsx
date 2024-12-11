@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    Navigate,
+} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Leaderboards from "./pages/Leaderboards.jsx";
 import Login from "./pages/Login.jsx";
@@ -11,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 const App = () => {
-    const { isPreload = false } = useSelector((states) => states);
+    const { isPreload = false, authUser } = useSelector((states) => states);
 
     const dispatch = useDispatch();
 
@@ -29,13 +34,28 @@ const App = () => {
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/leaderboards" element={<Leaderboards />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/login"
+                        element={authUser ? <Navigate to="/" /> : <Login />}
+                    />
+                    <Route
+                        path="/register"
+                        element={authUser ? <Navigate to="/" /> : <Register />}
+                    />
                     <Route
                         path="/threads/:threadId"
                         element={<ThreadDetail />}
                     />
-                    <Route path="/create" element={<CreateThread />} />
+                    <Route
+                        path="/create"
+                        element={
+                            authUser ? (
+                                <CreateThread />
+                            ) : (
+                                <Navigate to="/login" />
+                            )
+                        }
+                    />
                 </Route>
             </Routes>
         </Router>
