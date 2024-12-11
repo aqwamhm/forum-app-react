@@ -23,17 +23,13 @@ function unsetAuthUserActionCreator() {
     };
 }
 
-function asyncSetAuthUser({ id, password }) {
+function asyncSetAuthUser({ email, password }) {
     return async (dispatch) => {
-        try {
-            const token = await api.loginUser({ id, password });
-            api.putAccessToken(token);
-            const authUser = await api.getCurrentUserProfile();
+        const token = await api.loginUser({ email, password });
+        api.putAccessToken(token);
+        const authUser = await api.getOwnProfile();
 
-            dispatch(setAuthUserActionCreator(authUser));
-        } catch (error) {
-            alert(error.message);
-        }
+        dispatch(setAuthUserActionCreator(authUser));
     };
 }
 

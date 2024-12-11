@@ -1,40 +1,45 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+    asyncAddThreadComment,
+    asyncReceiveThreadDetail,
+    asyncToggleVoteComment,
+    asyncToggleVoteThreadDetail,
+} from "../states/threadDetail/action";
+import { FaCommentDots, FaTags } from "react-icons/fa";
+import Votes from "../components/Votes";
+import parser from "html-react-parser";
+import { showFormattedDate } from "../utils";
+
 const ThreadDetail = () => {
-    // Mock data for thread detail
-    const thread = {
-        id: "thread-1",
-        title: "Thread Pertama",
-        body: "Ini adalah thread pertama",
-        category: "General",
-        createdAt: "2021-06-21T07:00:00.000Z",
-        owner: {
-            id: "users-1",
-            name: "John Doe",
-            avatar: "https://generated-image-url.jpg",
-        },
-        upVotesBy: [],
-        downVotesBy: [],
-        comments: [
-            {
-                id: "comment-1",
-                content: "Ini adalah komentar pertama",
-                createdAt: "2021-06-21T07:00:00.000Z",
-                owner: {
-                    id: "users-1",
-                    name: "John Doe",
-                    avatar: "https://generated-image-url.jpg",
-                },
-                upVotesBy: [],
-                downVotesBy: [],
-            },
-        ],
+    const { threadId } = useParams();
+
+    const [comment, setComment] = useState("");
+
+    const { authUser, threadDetail: thread = null } = useSelector(
+        (states) => states
+    );
+    const dispatch = useDispatch();
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        try {
+            dispatch(asyncAddThreadComment({ threadId, content: comment }));
+            setComment("");
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
-    const handleCommentSubmit = (event) => {
-        event.preventDefault();
-        const commentContent = event.target.comment.value;
-        // Logic to submit the comment (e.g., API call)
-        console.log("New comment:", commentContent);
-    };
+    useEffect(() => {
+        dispatch(asyncReceiveThreadDetail(threadId));
+    }, [threadId, dispatch]);
+
+    if (!thread) {
+        return null;
+    }
 
     return (
         <div className="bg-gray-100 min-h-screen p-6">
@@ -52,19 +57,37 @@ const ThreadDetail = () => {
                         <h2 className="text-lg font-semibold text-gray-700">
                             {thread.owner.name}
                         </h2>
-                        <p className="text-gray-600">
-                            {new Date(thread.createdAt).toLocaleString()}
-                        </p>
+                        <small className="text-gray-600">
+                            {showFormattedDate(thread.createdAt)}
+                        </small>
                     </div>
                 </div>
-                <p className="text-gray-600 mb-6">{thread.body}</p>
+                <div className="text-gray-600 mb-6">{parser(thread.body)}</div>
+                <div className="mt-4 flex items-center text-sm text-gray-500 space-x-8">
+                    <Votes
+                        upVotesBy={thread.upVotesBy}
+                        downVotesBy={thread.downVotesBy}
+                        objectContentId={{ threadId: thread.id }}
+                        userId={authUser?.id}
+                        asyncToggle={asyncToggleVoteThreadDetail}
+                    />
+                    <span className="flex items-center">
+                        <FaCommentDots className="mr-1" />{" "}
+                        {thread.comments.length}
+                    </span>
+                    <span className="flex items-center">
+                        <FaTags className="mr-1" /> {thread.category}
+                    </span>
+                </div>
                 <div className="mt-6">
-                    <form onSubmit={handleCommentSubmit} className="mb-6">
+                    <form className="mb-6" onSubmit={handleSubmit}>
                         <textarea
                             name="comment"
                             className="w-full p-2 border border-gray-300 rounded-lg mb-2"
                             placeholder="Write your comment here..."
                             required
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
                         ></textarea>
                         <button
                             type="submit"
@@ -98,7 +121,16 @@ const ThreadDetail = () => {
                                     </p>
                                 </div>
                             </div>
-                            <p className="text-gray-600">{comment.content}</p>
+                            <p className="text-gray-600">
+                                {parser(comment.content)}
+                            </p>
+                            <Votes
+                                upVotesBy={comment.upVotesBy}
+                                downVotesBy={comment.downVotesBy}
+                                objectContentId={{ commentId: comment.id }}
+                                userId={authUser?.id}
+                                asyncToggle={asyncToggleVoteComment}
+                            />
                         </div>
                     ))}
                 </div>

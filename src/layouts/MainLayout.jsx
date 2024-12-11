@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
 import SideBar from "../components/SideBar";
 import BottomNav from "../components/BottomNav";
@@ -17,10 +16,6 @@ const MainLayout = () => {
             </div>
         </div>
     );
-};
-
-MainLayout.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 export default MainLayout;

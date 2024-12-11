@@ -13,13 +13,15 @@ function receiveLeaderboardsActionCreator(leaderboards) {
     };
 }
 
-async function asyncReceiveLeaderboards() {
-    try {
-        const leaderboards = await api.getLeaderboards();
-        return receiveLeaderboardsActionCreator(leaderboards);
-    } catch (error) {
-        alert(error.message);
-    }
+function asyncReceiveLeaderboards() {
+    return async (dispatch) => {
+        try {
+            const leaderboards = await api.getLeaderboards();
+            dispatch(receiveLeaderboardsActionCreator(leaderboards));
+        } catch (error) {
+            alert(error.message);
+        }
+    };
 }
 
 export {

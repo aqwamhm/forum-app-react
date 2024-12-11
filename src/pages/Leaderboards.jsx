@@ -1,25 +1,14 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncReceiveLeaderboards } from "../states/leaderboards/action";
+
 const Leaderboards = () => {
-    // Mock data for leaderboards
-    const leaderboards = [
-        {
-            user: {
-                id: "users-1",
-                name: "John Doe",
-                email: "john@example.com",
-                avatar: "https://generated-image-url.jpg",
-            },
-            score: 10,
-        },
-        {
-            user: {
-                id: "users-2",
-                name: "Jane Doe",
-                email: "jane@example.com",
-                avatar: "https://generated-image-url.jpg",
-            },
-            score: 5,
-        },
-    ];
+    const dispatch = useDispatch();
+    const { leaderboards } = useSelector((state) => state);
+
+    useEffect(() => {
+        dispatch(asyncReceiveLeaderboards());
+    }, [dispatch]);
 
     return (
         <div className="bg-gray-100 min-h-screen p-6">

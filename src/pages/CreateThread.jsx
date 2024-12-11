@@ -1,14 +1,25 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { asyncCreateThread } from "../states/threads/action";
+import { useNavigate } from "react-router-dom";
 
 const CreateThread = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [category, setCategory] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission here
-        console.log({ title, body, category });
+
+        try {
+            await dispatch(asyncCreateThread({ title, body, category }));
+            navigate("/");
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
     return (
@@ -39,12 +50,12 @@ const CreateThread = () => {
                     >
                         Body
                     </label>
-                    <textarea
+                    <div
                         id="body"
-                        value={body}
-                        onChange={(e) => setBody(e.target.value)}
-                        rows="4"
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        contentEditable
+                        onInput={(e) => setBody(e.target.innerHTML)}
+                        className="mt-1 block w-full px-3 py-2 border bg-white border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        style={{ minHeight: "4rem" }}
                     />
                 </div>
                 <div>
