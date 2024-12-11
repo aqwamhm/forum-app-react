@@ -2,13 +2,14 @@ import FloatingActionButton from "../components/FloatingActionButton";
 import { FaCommentDots, FaPlus } from "react-icons/fa";
 import { FaTags } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { asyncPopulateUsersAndThreads } from "../states/shared/action";
 import { Link } from "react-router-dom";
 import Votes from "../components/Votes";
 import { asyncToggleVoteThread } from "../states/threads/action";
 import parser from "html-react-parser";
 import { showFormattedDate } from "../utils";
+import CategoryFilter from "../components/CategoryFilter";
 
 const Home = () => {
     const {
@@ -19,20 +20,47 @@ const Home = () => {
 
     const dispatch = useDispatch();
 
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [categories, setCategories] = useState([]);
+
     useEffect(() => {
         dispatch(asyncPopulateUsersAndThreads());
     }, [dispatch]);
 
-    const threadList = threads.map((thread) => {
-        return {
-            ...thread,
-            user: users.find((user) => user.id === thread.ownerId),
-        };
-    });
+    useEffect(() => {
+        const uniqueCategories = [
+            ...new Set(threads.map((thread) => thread.category)),
+        ];
+        setCategories(uniqueCategories);
+    }, [threads]);
+
+    const onCategoryChange = (category) => {
+        if (selectedCategory === category) {
+            setSelectedCategory("");
+        } else {
+            setSelectedCategory(category);
+        }
+    };
+
+    const threadList = threads
+        .filter((thread) =>
+            selectedCategory ? thread.category === selectedCategory : true
+        )
+        .map((thread) => {
+            return {
+                ...thread,
+                user: users.find((user) => user.id === thread.ownerId),
+            };
+        });
 
     return (
         <div className="bg-gray-100 min-h-screen p-6">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">Home</h1>
+            <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={onCategoryChange}
+            />
             <div className="space-y-4">
                 {threadList.map((thread) => (
                     <div
