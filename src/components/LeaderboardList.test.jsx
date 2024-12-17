@@ -1,3 +1,12 @@
+/**
+ * test scenario for LeaderboardList Component
+ *
+ * - LeaderboardList Component
+ *  - should render the component with an empty leaderboard list
+ *  - should render the component with a non-empty leaderboard list
+ *
+ */
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import LeaderboardList from "./LeaderboardList";

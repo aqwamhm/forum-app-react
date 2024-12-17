@@ -1,3 +1,12 @@
+/**
+ * test scenario for shared action
+ *
+ * - asyncPopulateUsersAndThreads thunk
+ *  - should dispatch actions correctly on success
+ *  - should handle error and dispatch actions correctly
+ *
+ */
+
 import { asyncPopulateUsersAndThreads } from "./action";
 import api from "../../utils/api";
 import { receiveUsersActionCreator } from "../users/action";
@@ -51,7 +60,7 @@ describe("asyncPopulateUsersAndThreads thunk", () => {
         expect(window.alert).not.toHaveBeenCalled();
     });
 
-    it("should handle error and dispatches actions correctly", async () => {
+    it("should handle error and dispatch actions correctly", async () => {
         api.getAllUsers = () => Promise.reject(mockError);
         window.alert = vi.fn();
         const getAllThreadSpy = vi.spyOn(api, "getAllThreads");

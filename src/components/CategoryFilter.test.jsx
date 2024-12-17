@@ -1,3 +1,14 @@
+/**
+ * test scenario for CategoryFilter Component
+ *
+ * - CategoryFilter Component
+ *  - should render the correct number of buttons based on categories
+ *  - should call onCategoryChange when a category button is clicked
+ *  - should render no buttons when categories array is empty
+ *  - should not style any button when selectedCategory is not in categories
+ *
+ */
+
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";

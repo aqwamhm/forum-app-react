@@ -1,3 +1,15 @@
+/**
+ * test scenario for authUser action
+ *
+ * - asyncSetAuthUser thunk
+ *  - should dispatch action correctly when data fetching is success
+ *  - should dispatch action correctly when data fetching is failed
+ * - asyncUnsetAuthUser thunk
+ *  - should dispatch action correctly when data fetching is success
+ *  - should dispatch action correctly when data fetching is failed
+ *
+ */
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import api from "../../utils/api";
 import {

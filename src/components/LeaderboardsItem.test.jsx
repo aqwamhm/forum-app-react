@@ -1,3 +1,12 @@
+/**
+ * test scenario for LeaderboardsItem Component
+ *
+ * - LeaderboardsItem Component
+ *  - should render the component with correct props
+ *  - should display the correct user information and score
+ *
+ */
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import LeaderboardsItem from "./LeaderboardsItem";

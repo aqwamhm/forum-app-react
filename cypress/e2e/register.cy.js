@@ -1,3 +1,17 @@
+/**
+ * test scenario for Register spec
+ *
+ * - Register spec
+ *  - should display register page correctly
+ *  - should display alert when name is empty
+ *  - should display alert when email is empty
+ *  - should display alert when password is empty
+ *  - should display alert when email is invalid
+ *  - should display alert when password is too short
+ *  - should display homepage when registration is successful
+ *
+ */
+
 describe("Register spec", () => {
     beforeEach(() => {
         cy.visit("http://localhost:5173/register");

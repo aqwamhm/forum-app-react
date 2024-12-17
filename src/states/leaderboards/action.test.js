@@ -1,3 +1,12 @@
+/**
+ * test scenario for leaderboards action
+ *
+ * - asyncReceiveLeaderboards thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ *
+ */
+
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import api from "../../utils/api";
 import {
@@ -24,7 +33,7 @@ afterEach(() => {
 });
 
 describe("asyncReceiveLeaderboards thunk", () => {
-    it("dispatches actions correctly on success", async () => {
+    it("should dispatch actions correctly on success", async () => {
         api.getLeaderboards = () => Promise.resolve(mockLeaderboards);
 
         const dispatch = vi.fn();
@@ -39,7 +48,7 @@ describe("asyncReceiveLeaderboards thunk", () => {
         expect(dispatch).toHaveBeenNthCalledWith(3, hideLoading());
     });
 
-    it("dispatches actions correctly on failure", async () => {
+    it("should dispatch actions correctly on failure", async () => {
         api.getLeaderboards = () => Promise.reject(mockError);
 
         const dispatch = vi.fn();

@@ -1,3 +1,21 @@
+/**
+ * test scenario for threadDetail action
+ *
+ * - asyncReceiveThreadDetail thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ * - asyncAddThreadComment thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ * - asyncToggleVoteThreadDetail thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ * - asyncToggleVoteComment thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ *
+ */
+
 import {
     asyncReceiveThreadDetail,
     asyncAddThreadComment,
@@ -68,7 +86,7 @@ afterEach(() => {
 });
 
 describe("asyncReceiveThreadDetail thunk", () => {
-    it("dispatches actions correctly on success", async () => {
+    it("should dispatch actions correctly on success", async () => {
         api.getThreadDetail = () => Promise.resolve(mockThreadDetail);
         window.alert = vi.fn();
 
@@ -85,7 +103,7 @@ describe("asyncReceiveThreadDetail thunk", () => {
         expect(window.alert).not.toHaveBeenCalled();
     });
 
-    it("dispatches actions correctly on failure", async () => {
+    it("should dispatch actions correctly on failure", async () => {
         api.getThreadDetail = () => Promise.reject(mockError);
         window.alert = vi.fn();
 
@@ -104,7 +122,7 @@ describe("asyncReceiveThreadDetail thunk", () => {
 });
 
 describe("asyncAddThreadComment thunk", () => {
-    it("dispatches actions correctly on success", async () => {
+    it("should dispatch actions correctly on success", async () => {
         api.createComment = () => Promise.resolve(mockComment);
         window.alert = vi.fn();
 
@@ -123,7 +141,7 @@ describe("asyncAddThreadComment thunk", () => {
         expect(window.alert).not.toHaveBeenCalled();
     });
 
-    it("dispatches actions correctly on failure", async () => {
+    it("should dispatch actions correctly on failure", async () => {
         api.createComment = () => Promise.reject(mockError);
         window.alert = vi.fn();
 
@@ -144,7 +162,7 @@ describe("asyncAddThreadComment thunk", () => {
 });
 
 describe("asyncToggleVoteThreadDetail thunk", () => {
-    it("dispatches actions correctly on success", async () => {
+    it("should dispatch actions correctly on success", async () => {
         api.upVoteThread = () => Promise.resolve();
         window.alert = vi.fn();
 
@@ -171,7 +189,7 @@ describe("asyncToggleVoteThreadDetail thunk", () => {
         expect(window.alert).not.toHaveBeenCalled();
     });
 
-    it("dispatches actions correctly on failure", async () => {
+    it("should dispatch actions correctly on failure", async () => {
         api.upVoteThread = () => Promise.reject(mockError);
         window.alert = vi.fn();
 
@@ -207,7 +225,7 @@ describe("asyncToggleVoteThreadDetail thunk", () => {
 });
 
 describe("asyncToggleVoteComment thunk", () => {
-    it("dispatches actions correctly on success", async () => {
+    it("should dispatch actions correctly on success", async () => {
         api.upVoteComment = () => Promise.resolve();
         window.alert = vi.fn();
 
@@ -237,7 +255,7 @@ describe("asyncToggleVoteComment thunk", () => {
         expect(window.alert).not.toHaveBeenCalled();
     });
 
-    it("dispatches actions correctly on failure", async () => {
+    it("should dispatch actions correctly on failure", async () => {
         api.upVoteComment = () => Promise.reject(mockError);
         window.alert = vi.fn();
 

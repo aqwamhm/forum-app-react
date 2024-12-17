@@ -1,3 +1,12 @@
+/**
+ * test scenario for users action
+ *
+ * - asyncRegisterUser thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ *
+ */
+
 import { asyncRegisterUser } from "./action";
 import api from "../../utils/api";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
@@ -20,7 +29,7 @@ afterEach(() => {
 });
 
 describe("asyncRegisterUser thunk", () => {
-    it("dispatches actions correctly on success", async () => {
+    it("should dispatch actions correctly on success", async () => {
         api.registerUser = vi.fn();
         const dispatch = vi.fn();
 
@@ -32,7 +41,7 @@ describe("asyncRegisterUser thunk", () => {
         expect(api.registerUser).toHaveBeenCalledWith(mockUser);
     });
 
-    it("dispatches actions correctly on failure", async () => {
+    it("should dispatch actions correctly on failure", async () => {
         api.registerUser = vi.fn(() => Promise.reject(mockError));
 
         const dispatch = vi.fn();

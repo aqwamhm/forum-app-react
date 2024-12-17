@@ -1,3 +1,18 @@
+/**
+ * test scenario for threads action
+ *
+ * - asyncReceiveThreads thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ * - asyncAddThread thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ * - asyncToggleVoteThread thunk
+ *  - should dispatch actions correctly on success
+ *  - should dispatch actions correctly on failure
+ *
+ */
+
 import {
     asyncReceiveThreads,
     asyncAddThread,
