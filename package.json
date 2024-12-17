@@ -8,7 +8,7 @@
         "build": "vite build",
         "lint": "eslint ./src",
         "test": "vitest",
-        "ci:test": "vitest --no-watch && start-server-and-test dev http-get://localhost:5173 e2e",
+        "ci:test": "vitest --no-watch && npx start-server-and-test dev http-get://localhost:5173 e2e",
         "preview": "vite preview",
         "e2e": "cypress run",
         "storybook": "storybook dev -p 6006",
